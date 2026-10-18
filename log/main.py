@@ -4,6 +4,9 @@ import secrets
 chars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~"
 charCount = 94
 
+
+
+
 def mainMenu():
 	print("Password Manager")
 	print("-----------------\n")
@@ -19,7 +22,6 @@ def mainMenu():
 
 			if option not in (1,2,3,4):
 				print("Error! Enter the numbers of these options")
-				option = None
 			else:
 				sceneChanger(option)
 				break
@@ -37,34 +39,39 @@ def sceneChanger(scene : int):
 
 def showlist():
 	PasswordDatabank = passwordbank.getPasswords()
+
 	index: int= 1
 	for passwordData in PasswordDatabank:
 		print(str(index) + ". " + passwordData["name"] + ": " + passwordData["password"])
 		index += 1
 
-	print("Enter 1 if you want do delete a password")
-	print("Enter anything else if you want to go to main Menu")
+	print("\nEnter 1 to delete a password")
+	print("Enter anything else to go to main Menu")
 
 	choice = str(input("Enter choice: "))
 
 	if (choice == "1"):
 		print("Enter the password number you want to delete")
 
-		passIndex : int = -1
 
-		while passIndex < 1 or passIndex > len(PasswordDatabank):
+
+		while True:
 			try:
 				passIndex: int = int(input("Enter choice: "))
 
 				if passIndex < 1 or passIndex > len(PasswordDatabank):
 					print("Number is not in range")
 
+				else:
+					print("Password for " + PasswordDatabank[passIndex-1]["name"] + " got deleted")
+					passwordbank.deletePassword(passIndex-1)
+					break
+
 			except ValueError:
 				print("Error! Enter a number")
 				passIndex : int = -1
 
-		print("Password for " + PasswordDatabank[passIndex-1]["name"] + " got deleted")
-		passwordbank.deletePassword(passIndex-1)
+
 		mainMenu()
 
 	else:
