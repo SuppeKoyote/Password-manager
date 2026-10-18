@@ -18,8 +18,8 @@ def getPasswords() -> list:
 	return passwords
 
 
-def addPassword(passwordData : dict):
-	passwords.append(passwordData)
+def savePassword(passwordData : list):
+	passwords = passwordData
 	saveJson()
 
 def deletePassword(index: int):

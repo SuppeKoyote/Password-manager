@@ -45,26 +45,15 @@ def showlist():
 		print(str(index) + ". " + passwordData["name"] + ": " + passwordData["password"])
 		index += 1
 
-	print("\nEnter 1 to delete a password")
+	print("\nEnter 1 to delete a password or 2 to edit a password")
 	print("Enter anything else to go to main Menu")
 
 	choice = str(input("Enter choice: "))
 
 	if (choice == "1"):
-		print("Enter the password number you want to delete: ", end="")
-
-		passIndex = getPassDataFromList()		
-
-
-		print("Are you sure to delete " + PasswordDatabank[passIndex-1]["name"] + "?")
-		confirmation = str(input("Enter y to confirm: "))
-		if(confirmation == "y"):
-			passwordbank.deletePassword(passIndex-1)
-			print("Succesfully deleted")
-			mainMenu()
-		else:
-			mainMenu()
-
+		deletPassword()
+	elif (choice == "2"):
+		editPassword()
 	else:
 		mainMenu()
 
@@ -94,15 +83,10 @@ def randomPassGen():
 	
 def addPassword():
 
-	passwordname = ""
-
-	while passwordname == "":
-		passwordname = input("Enter the plattform for the password: ").strip()
-
-	newpassword = str(input("Enter password: "))
-
-	newPasswordData = {"name" : passwordname, "password" : newpassword}
-	passwordbank.addPassword(newPasswordData)
+	newPasswordData = makePasswordData()
+	PasswordDatabank.append = newPasswordData
+	passwordbank.savePassword(PasswordDatabank)
+	mainMenu()
 
 
 def getPassDataFromList() -> int:
@@ -119,5 +103,49 @@ def getPassDataFromList() -> int:
 		except ValueError:
 			print("Error! Enter a number")
 			passIndex : int = -1
+
+def deletPassword():
+	print("Enter the password number you want to delete: ", end="")
+
+	passIndex = getPassDataFromList()		
+
+
+	print("Are you sure to delete " + PasswordDatabank[passIndex-1]["name"] + "?")
+	confirmation = str(input("Enter y to confirm: "))
+	if(confirmation == "y"):
+		passwordbank.deletePassword(passIndex-1)
+		print("Succesfully deleted")
+		mainMenu()
+	else:
+		mainMenu()	
+
+def editPassword():
+	print("Enter the password number you want to edit: ", end="")
+
+	passIndex = getPassDataFromList()
+
+	newPasswordData = makePasswordData()
+
+	print("Are you sure to change: " + PasswordDatabank[passIndex-1]["name"] +" " + PasswordDatabank[passIndex-1]["password"], end="" )
+	print(" to: " + newPasswordData["name"] +" " + newPasswordData["password"])
+	confirmation = str(input("Enter y to comfirm"))
+
+	if confirmation == "y":
+		PasswordDatabank[passIndex-1]["name"] = newPasswordData["name"]
+		PasswordDatabank[passIndex-1]["password"] = newPasswordData["password"]
+		passwordbank.savePassword(PasswordDatabank)
+
+
+
+def makePasswordData() -> dict:
+	passwordname = ""
+
+	while passwordname == "":
+		passwordname = input("Enter new Platform name: ").strip()
+
+	newpassword = str(input("Enter new Password: "))
+
+	newPasswordData = {"name" : passwordname, "password" : newpassword}
+	return newPasswordData
 
 mainMenu()
