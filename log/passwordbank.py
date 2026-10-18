@@ -1,9 +1,15 @@
 import json
+from pathlib import Path
 
 
 passwords = [{}]
 
-with open("passwords.json", "r") as file:
+
+parent = Path(__file__).parent
+jsonFile = parent / "passwords.json"
+
+
+with open(jsonFile, "r") as file:
 	passwords = json.load(file)
 
 
@@ -22,5 +28,5 @@ def deletePassword(index: int):
 
 
 def saveJson():
-	with open("passwords.json", "w") as file:
+	with open(jsonFile, "w") as file:
 		json.dump(passwords, file)
