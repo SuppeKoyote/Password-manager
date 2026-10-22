@@ -40,6 +40,10 @@ def sceneChanger(scene : int):
 def showlist():
 	PasswordDatabank = passwordbank.getPasswords()
 
+	if (len(PasswordDatabank) == 0):
+		print("No Passwords in List")
+		return
+
 	index: int= 1
 	for passwordData in PasswordDatabank:
 		print(str(index) + ". " + passwordData["name"] + ": " + passwordData["password"])
@@ -84,7 +88,7 @@ def randomPassGen():
 def addPassword():
 
 	newPasswordData = makePasswordData()
-	PasswordDatabank.append = newPasswordData
+	PasswordDatabank.append(newPasswordData)
 	passwordbank.savePassword(PasswordDatabank)
 	mainMenu()
 
@@ -93,6 +97,10 @@ def getPassDataFromList() -> int:
 	while True:
 		try:
 			passIndex: int = int(input())
+
+			if (len(PasswordDatabank) == 0):
+				print("No Passwords in List")
+				break
 
 			if passIndex < 1 or passIndex > len(PasswordDatabank):
 				print("Number is not in range")
@@ -142,6 +150,12 @@ def makePasswordData() -> dict:
 
 	while passwordname == "":
 		passwordname = input("Enter new Platform name: ").strip()
+
+		for passwordData in PasswordDatabank:
+			if passwordData["name"] == passwordname:
+				print("Name already exists")
+				passwordname = ""
+
 
 	newpassword = str(input("Enter new Password: "))
 

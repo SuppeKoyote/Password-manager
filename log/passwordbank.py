@@ -8,9 +8,17 @@ passwords = [{}]
 parent = Path(__file__).parent
 jsonFile = parent / "passwords.json"
 
+while True:
+	try:
+		with open(jsonFile, "r") as file:
+			passwords = json.load(file)
+			break
 
-with open(jsonFile, "r") as file:
-	passwords = json.load(file)
+	except json.JSONDecodeError:
+		print("Json is empty")
+		with open(jsonFile, "w") as file:
+			json.dump([], file)
+
 
 
 
